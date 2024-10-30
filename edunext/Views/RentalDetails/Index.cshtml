@@ -1,0 +1,54 @@
+﻿@model IEnumerable<edunext.Models.RentalDetail>
+
+@{
+    ViewData["Title"] = "Danh sách thuê sách";
+}
+
+<h1>Danh sách thuê sách</h1>
+
+<p>
+    <a asp-action="Create">Thêm mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Tên sách</th>
+            <th>Ngày thuê</th>
+            <th>Ngày trả</th>
+            <th>Khách hàng</th>
+            <th>Số lượng</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+@{ int stt = 1; }
+@foreach (var item in Model) {
+        <tr>
+            <td>@stt</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ComicBook.Title)
+            </td>
+                <td>
+                    @string.Format("{0:dd/MM/yyyy}", item.Rental.RentalDate)
+                </td>
+                <td>
+                    @(item.Rental.ReturnDate.HasValue ? string.Format("{0:dd/MM/yyyy}", item.Rental.ReturnDate.Value) : "")
+                </td>
+
+            <td>
+                    @Html.DisplayFor(modelItem => item.Rental.Customer.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.RentalDetailID">Sửa</a> |
+                <a asp-action="Details" asp-route-id="@item.RentalDetailID">Chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.RentalDetailID">Xóa</a>
+            </td>
+        </tr>
+            stt++;
+}
+    </tbody>
+</table>
